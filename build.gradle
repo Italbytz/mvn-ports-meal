@@ -1,0 +1,84 @@
+plugins {
+    id 'java'
+    id 'org.jetbrains.kotlin.jvm' version '1.3.72'
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk8'
+    implementation 'io.github.italbytz.ports:common:0.1.1'
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+}
+
+apply plugin: 'maven'
+apply plugin: 'signing'
+
+task javadocJar(type: Jar) {
+    classifier = 'javadoc'
+    from javadoc
+}
+
+task sourcesJar(type: Jar) {
+    classifier = 'sources'
+    from sourceSets.main.allSource
+}
+
+artifacts {
+    archives javadocJar, sourcesJar
+}
+
+signing {
+    sign configurations.archives
+}
+
+group = "io.github.italbytz.ports"
+archivesBaseName = "meal"
+version = "0.1.1"
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+
+            repository(url: "https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/") {
+                authentication(userName: ossrhUsername, password: ossrhPassword)
+            }
+
+            snapshotRepository(url: "https://s01.oss.sonatype.org/content/repositories/snapshots/") {
+                authentication(userName: ossrhUsername, password: ossrhPassword)
+            }
+
+            pom.project {
+                name 'Meal Ports'
+                packaging 'jar'
+                description 'A set of helpful interfaces to use with Hexagonal Architecture.'
+                url 'https://github.com/Italbytz/mvn-ports-meal'
+
+                scm {
+                    connection 'scm:git:git://github.com/Italbytz/mvn-ports-meal.git'
+                    developerConnection 'scm:git:ssh://github.com/Italbytz/mvn-ports-meal.git'
+                    url 'https://github.com/Italbytz/mvn-ports-meal.git'
+                }
+
+                licenses {
+                    license {
+                        name 'The Apache License, Version 2.0'
+                        url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                    }
+                }
+
+                developers {
+                    developer {
+                        name 'Robin Nunkesser'
+                        email 'robin.nunkesser@hshl.de'
+                    }
+                }
+            }
+        }
+    }
+}
+
+

@@ -1,0 +1,19 @@
+package io.github.italbytz.ports.meal
+
+enum class Additives {
+    FOODCOLORING,
+    PRESERVATIVES,
+    ANTIOXIDANTS,
+    FLAVORENHANCER,
+    PHOSPHATE,
+    SULPHURETED,
+    WAXED,
+    BLACKEND,
+    SWEETENER,
+    PHENYLALANINE,
+    TAURINE,
+    NITRITEPICKLINGSALT,
+    CAFFEINATED,
+    QUININE,
+    MILKPROTEIN
+}
